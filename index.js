@@ -53,6 +53,25 @@ app.get("/books", async (req, res) => {
 
 
 
+// Get the 10 newest books (newest first)
+app.get("/books/latest", async (req, res) => {
+  try {
+    const books = await booksCollection
+      .find()
+      .sort({ _id: -1 })
+      .limit(10)
+      .toArray();
+
+    res.send(books);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).send({
+      message: "Failed to get latest books",
+    });
+  }
+});
+
 app.get("/books/:id", async (req, res) => {
   try {
     const id = req.params.id;
