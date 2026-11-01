@@ -204,25 +204,57 @@ app.delete("/books/:id", verifyToken, async (req, res) => {
 });
 app.post("/books", verifyToken, async (req, res) => {
   try {
-   const newBook = {
-  ...req.body,
-  addedBy: req.user.name,
-  addedByEmail: req.user.email,
-  addedAt: new Date(),
-};
+    const {
+      title,
+      author,
+      category,
+      image,
+      description,
+      totalCopies,
+    } = req.body;
+
+    if (
+      typeof title !== "string" ||
+      !title.trim() ||
+      typeof author !== "string" ||
+      !author.trim() ||
+      typeof category !== "string" ||
+      !category.trim() ||
+      typeof image !== "string" ||
+      !image.trim() ||
+      typeof description !== "string" ||
+      !description.trim() ||
+      !Number.isInteger(totalCopies) ||
+      totalCopies < 0
+    ) {
+      return res.status(400).send({
+        message: "Please provide valid book information",
+      });
+    }
+
+    const newBook = {
+      title: title.trim(),
+      author: author.trim(),
+      category: category.trim(),
+      image: image.trim(),
+      description: description.trim(),
+      totalCopies,
+      addedBy: req.user.name,
+      addedByEmail: req.user.email,
+      addedAt: new Date(),
+    };
 
     const result = await booksCollection.insertOne(newBook);
 
     res.status(201).send({
       message: "Book added successfully",
-      insertedId: result.insertedId
+      insertedId: result.insertedId,
     });
-
   } catch (error) {
     console.error(error);
 
     res.status(500).send({
-      message: "Failed to add book"
+      message: "Failed to add book",
     });
   }
 });
