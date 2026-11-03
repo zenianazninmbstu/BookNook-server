@@ -51,12 +51,10 @@ Create a .env file in the project root with these variables:
 
 
 MONGODB_URI=
+
 BETTER_AUTH_URL=
 
 
-Add your actual MongoDB connection string and Better Auth server URL in your local .env file.
-
-**Important:** Never upload your .env file or expose database credentials on GitHub.
 
 ### 3. Start the Server
 
