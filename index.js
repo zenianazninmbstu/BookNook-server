@@ -55,20 +55,30 @@ async function verifyToken(req, res, next) {
     });
   }
 }
+let connectionPromise;
 
 export async function connectToMongoDB() {
-  try {
-    await client.connect();
-    console.log("You successfully connected to MongoDB!");
-    return client;
-  } catch (err) {
-    console.dir(err);
+  if (!connectionPromise) {
+    connectionPromise = client.connect();
   }
+
+  return connectionPromise;
 }
 
 
 
 //http://localhost:5000
+
+
+app.use(async (req, res, next) => {
+  try {
+    await connectToMongoDB();
+    next();
+  } catch (error) {
+    console.error("MongoDB connection failed:", error);
+    res.status(500).send({ message: "Database connection failed" });
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("BookNook Server is Running!");
@@ -426,4 +436,10 @@ async function startServer() {
   });
 }
 
-startServer();
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`BookNook server is running on port ${port}`);
+  });
+}
+
+export default app;
