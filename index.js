@@ -7,9 +7,14 @@ import { jwtVerify, createRemoteJWKSet } from "jose";
 
 
 const app = express();
-app.use(cors({
-  origin: "http://localhost:3000"
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://book-nook-client-iota.vercel.app",
+    ],
+  })
+);
 
 app.use(express.json());
 const port = 5000;
