@@ -37,6 +37,12 @@ BookNook is a small online library platform where users can explore books, manag
 | GET    | /borrows       | Get personal borrow records | Protected |
 | DELETE | /borrows/:id   | Return a borrowed book      | Protected |
 
+
+🔗 Live API
+
+https://book-nook-server-8o4x.vercel.app
+
+
  🚀 Installation and Setup
 
 1. Install Dependencies
@@ -58,8 +64,7 @@ BETTER_AUTH_URL=
 
 3. Start the Server
 
-
-nodemon index.js
+npx nodemon index.js
 
 
 The server runs at:
